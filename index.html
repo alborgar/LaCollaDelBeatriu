@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ítaca · Sesiones</title>
+
+<style>
+:root{
+    --blue:#1fb1d6;
+    --blue-dark:#178fb0;
+    --orange:#f57c00;
+    --grey:#e6e6e6;
+    --line:#d6d6d6;
+    --icon:#6f7f87;
+}
+
+*{
+    box-sizing:border-box;
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+body{
+    margin:0;
+    background:#f2f4f6;
+}
+
+/* TOP BAR */
+.topbar{
+    background:var(--blue);
+    padding:10px 16px;
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+.topbar .circle{
+    display: inline-block;
+    width: 2em;
+    height: 2em;
+    padding-top: .4em;
+    background-color: rgba(0, 0, 0, 0.15);
+    border-radius: 1em;
+}
+.topbar .title{
+    background:var(--blue-dark);
+    padding:8px 14px;
+    border-radius:6px;
+    color:white;
+    font-weight:bold;
+}
+
+/* SESSION BAR */
+.session-bar{
+    background:var(--blue);
+    padding:12px 16px;
+}
+.session-box{
+    background:white;
+    border-radius:4px;
+    padding:8px 12px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-bottom:8px;
+    color: #666;
+}
+.session-bar label{
+    color:white;
+    display:flex;
+    align-items:center;
+    gap:8px;
+    font-size:14px;
+}
+
+/* COLUMN HEADERS */
+.columns{
+    position:relative;
+    padding:12px 10px 10px 10px;
+    display:grid;
+    grid-template-columns: auto 1fr 120px 60px 70px 70px;
+    color:var(--blue);
+    font-size:13px;
+}
+.columns span{
+    text-align:center;
+    white-space:nowrap;
+}
+.columns span:first-child,
+.columns span:nth-child(2){
+    text-align:left;
+}
+
+/* LIST */
+.list{
+    background:white;
+}
+
+/* ROW */
+.row{
+    display:grid;
+    grid-template-columns: auto 1fr 70px 70px 70px 70px;
+    align-items:center;
+    padding:12px 16px;
+    border-bottom:1px solid #e0e0e0;
+}
+.row:nth-child(even){
+    background:var(--grey);
+}
+
+/* AVATAR */
+.avatar{
+    overflow: hidden;
+    float: left;
+    width: 2.5em;
+    height: 2.5em;
+    text-align: center;
+    border: .1em solid var(--blue);
+    border-radius: 5em;
+    margin-right:12px;
+
+}
+
+/* INFO */
+.info{
+    color:var(--blue);
+}
+.info small{
+    display:block;
+    color:#5aaec6;
+    font-size:13px;
+}
+
+/* ACTIONS */
+.action{
+    display:flex;
+    justify-content:center;
+}
+
+.icon{
+    width:22px;
+    height:22px;
+    border:3px solid #9e9e9e;
+    border-radius:4px;
+    cursor:pointer;
+    background-color: white;
+}
+.icon.circle{
+    border-radius:50%;
+}
+.icon.menu{
+    border:none;
+    background:var(--icon);
+    border-radius:50%;
+    position:relative;
+}
+.icon.menu::before{
+    content:"≡";
+    color:white;
+    font-size:16px;
+    position:absolute;
+    inset:0;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+.icon.active{
+    background:var(--orange);
+    border-color:var(--orange);
+}
+.icon.just{
+    background:#9e9e9e;
+}
+
+/* BEHAVIOUR NOTES 
+/* BIEN https://docent.edu.gva.es/md-front/www/imgs/icones_SVG/comportament_RP.svg 
+/* REGULAR https://docent.edu.gva.es/md-front/www/imgs/icones_SVG/comportament_AT.svg 
+/* MAL https://docent.edu.gva.es/md-front/www/imgs/icones_SVG/comportament_AC.svg
+
+Abandona la classe sense permís
+Altera i/o modifica les informacions dirigides a la família
+Agafa materials que no són seus
+Danya el mobiliari i/o material del centre
+Distrau als companys
+Falta el respecte als companys
+Falta el respecte al professor
+Parla, molesta i interromp
+Incita a no complir les normes
+Introdueix substàncies perjudicials per a la salut
+Maltracta el material de l'aula
+Molesta durant un examen
+No comunica la informació del centre a la família, de manera intencionada
+No compleix les normes del centre
+Es nega a complir les mesures correctores proposades
+Suplanta la personalitat d'un company
+Utilitza el movil i/o aparells electrònics quan no correspon
+Utilitza inadequadament les TICS
+
+No entrega els treballs
+No fa els deures
+No es presenta a un examen
+No treballa en classe
+No porta el material a classe
+
+Lliurament els treballs quan correspon
+Ha fet els deures
+Ha millorat el seu rendiment
+Ha millorat el seu treball
+Reconeixement positiu
+S'esforça i participa
+Treballa en classe
+*/
+.behaviour{
+    margin-top:4px;
+    font-size:13px;
+    color:#666;
+}
+.behaviour div{
+    display:flex;
+    align-items:center;
+    gap:6px;
+}
+.behaviour img{
+    width:14px;
+    height:14px;
+}
+
+.avatar svg {
+    fill: var(--blue);
+}
+
+@media (max-width:768px){
+    .row {
+        display: grid;
+        grid-template-columns: auto 1fr 50px 50px 50px 50px;
+    }
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- TOP BAR -->
+<div class="topbar">
+
+    <div class="title">LA COLLA DEL BEATRIU</div>
+</div>
+
+<!-- SESSION -->
+<div class="session-bar">
+    <div class="session-box">
+        📅 Dissabte, 31 gener 2026, 13:30 h.
+    </div>
+    <label>
+        <div class="action"><div class="icon"></div></div> Sense faltes
+    </label>
+</div>
+
+<!-- HEADERS -->
+<div class="columns">
+    <span></span>
+    <span></span>
+    <span>COMPORTAMENT</span>
+    <span>FALTA</span>
+    <span>RETRÀS</span>
+    <span>JUSTIFICA</span>
+</div>
+
+<!-- LIST -->
+<div class="list">
+
+    <div class="row">
+        <div class="avatar">
+            <svg viewBox="0 0 131 131">
+                <g fill="" stroke="" transform="translate(0.000000,131.000000) scale(0.100000,-0.100000)">
+                <path d="M530 1227c-48-15-113-83-128-133-15-50-15-162-1-223
+                7-30 7-47-1-55-23-23-7-104 26-131 6-5 17-27 24-47
+                6-20 22-53 36-73 19-28 24-49 24-96 0-85-31-115-174-174
+                -64-27-137-66-176-95-69-51-81-71-95-162l-6-38h596l595 0-4 22
+                c-3 13-8 46-11 73-4 28-11 58-16 68-11 19-165 99-277 142
+                -40 16-88 42-107 59-33 29-35 36-37 96-2 54 2 72 24 110
+                14 25 28 57 32 72 3 15 17 38 31 52 19 19 25 36 25 69
+                0 23-5 48-10 53-8 8-7 20 0 40 7 16 14 67 17 115
+                5 72 3 92-15 132-21 47-69 87-104 87-10 0-18 4-18 9
+                0 5-15 16-34 25-39 19-161 20-216 3z"></path> </g>
+            </svg>
+        </div>
+        <div class="info">
+            Bordes García, Alberto
+            <small>La Colla del Beatriu</small>
+             <div class="behaviour">
+                <div>
+                    <img src="https://docent.edu.gva.es/md-front/www/imgs/icones_SVG/comportament_RP.svg">
+                    Ha millorat el seu rendiment en pilota
+                </div>
+            </div>
+        </div>
+
+        <div class="action"><div class="icon menu"></div></div>
+        <div class="action"><div class="icon circle"></div></div>
+        <div class="action"><div class="icon"></div></div>
+        <div class="action"><div class="icon"></div></div>
+    </div>
+
+    <div class="row">
+        <div class="avatar">
+            <svg viewBox="0 0 131 131">
+                <g fill="" stroke="" transform="translate(0.000000,131.000000) scale(0.100000,-0.100000)">
+                <path d="M530 1227c-48-15-113-83-128-133-15-50-15-162-1-223
+                7-30 7-47-1-55-23-23-7-104 26-131 6-5 17-27 24-47
+                6-20 22-53 36-73 19-28 24-49 24-96 0-85-31-115-174-174
+                -64-27-137-66-176-95-69-51-81-71-95-162l-6-38h596l595 0-4 22
+                c-3 13-8 46-11 73-4 28-11 58-16 68-11 19-165 99-277 142
+                -40 16-88 42-107 59-33 29-35 36-37 96-2 54 2 72 24 110
+                14 25 28 57 32 72 3 15 17 38 31 52 19 19 25 36 25 69
+                0 23-5 48-10 53-8 8-7 20 0 40 7 16 14 67 17 115
+                5 72 3 92-15 132-21 47-69 87-104 87-10 0-18 4-18 9
+                0 5-15 16-34 25-39 19-161 20-216 3z"></path> </g>
+            </svg>
+        </div>
+        <div class="info">
+            Borrás Aguilar, Nuria
+            <small>La Colla del Beatriu</small>
+             <div class="behaviour">
+                <div>
+                    <img src="https://docent.edu.gva.es/md-front/www/imgs/icones_SVG/comportament_RP.svg">
+                    S'adapta bé a la nova classe
+                </div>
+                <div>
+                    <img src="https://docent.edu.gva.es/md-front/www/imgs/icones_SVG/comportament_AT.svg">
+                    Abandona la classe sense permís
+                </div>
+            </div>
+        </div>
+
+        <div class="action"><div class="icon menu"></div></div>
+        <div class="action"><div class="icon circle"></div></div>
+        <div class="action"><div class="icon"></div></div>
+        <div class="action"><div class="icon"></div></div>
+    </div>
+    <div class="row">
+        <div class="avatar">
+            <svg viewBox="0 0 131 131">
+                <g fill="" stroke="" transform="translate(0.000000,131.000000) scale(0.100000,-0.100000)">
+                <path d="M530 1227c-48-15-113-83-128-133-15-50-15-162-1-223
+                7-30 7-47-1-55-23-23-7-104 26-131 6-5 17-27 24-47
+                6-20 22-53 36-73 19-28 24-49 24-96 0-85-31-115-174-174
+                -64-27-137-66-176-95-69-51-81-71-95-162l-6-38h596l595 0-4 22
+                c-3 13-8 46-11 73-4 28-11 58-16 68-11 19-165 99-277 142
+                -40 16-88 42-107 59-33 29-35 36-37 96-2 54 2 72 24 110
+                14 25 28 57 32 72 3 15 17 38 31 52 19 19 25 36 25 69
+                0 23-5 48-10 53-8 8-7 20 0 40 7 16 14 67 17 115
+                5 72 3 92-15 132-21 47-69 87-104 87-10 0-18 4-18 9
+                0 5-15 16-34 25-39 19-161 20-216 3z"></path> </g>
+            </svg>
+        </div>
+        <div class="info">
+            Igualada Albiñana, Ignacio
+            <small>La Colla del Beatriu</small>
+             <div class="behaviour">
+
+            </div>
+        </div>
+
+        <div class="action"><div class="icon menu"></div></div>
+        <div class="action"><div class="icon circle active"></div></div>
+        <div class="action"><div class="icon"></div></div>
+        <div class="action"><div class="icon"></div></div>
+    </div>
+    <div class="row">
+        <div class="avatar">
+            <svg viewBox="0 0 131 131">
+                <g fill="" stroke="" transform="translate(0.000000,131.000000) scale(0.100000,-0.100000)">
+                <path d="M530 1227c-48-15-113-83-128-133-15-50-15-162-1-223
+                7-30 7-47-1-55-23-23-7-104 26-131 6-5 17-27 24-47
+                6-20 22-53 36-73 19-28 24-49 24-96 0-85-31-115-174-174
+                -64-27-137-66-176-95-69-51-81-71-95-162l-6-38h596l595 0-4 22
+                c-3 13-8 46-11 73-4 28-11 58-16 68-11 19-165 99-277 142
+                -40 16-88 42-107 59-33 29-35 36-37 96-2 54 2 72 24 110
+                14 25 28 57 32 72 3 15 17 38 31 52 19 19 25 36 25 69
+                0 23-5 48-10 53-8 8-7 20 0 40 7 16 14 67 17 115
+                5 72 3 92-15 132-21 47-69 87-104 87-10 0-18 4-18 9
+                0 5-15 16-34 25-39 19-161 20-216 3z"></path> </g>
+            </svg>
+        </div>
+        <div class="info">
+            Llago Urbiola, Laura
+            <small>La Colla del Beatriu</small>
+             <div class="behaviour">
+                <div>
+                    <img src="https://docent.edu.gva.es/md-front/www/imgs/icones_SVG/comportament_RP.svg">
+                    Demostra iniciativa a l'hora de prendre desicions
+                </div>
+            </div>
+        </div>
+
+        <div class="action"><div class="icon menu"></div></div>
+        <div class="action"><div class="icon circle"></div></div>
+        <div class="action"><div class="icon"></div></div>
+        <div class="action"><div class="icon"></div></div>
+    </div>
+
+    <div class="row">
+        <div class="avatar">
+            <svg viewBox="0 0 131 131">
+                <g fill="" stroke="" transform="translate(0.000000,131.000000) scale(0.100000,-0.100000)">
+                <path d="M530 1227c-48-15-113-83-128-133-15-50-15-162-1-223
+                7-30 7-47-1-55-23-23-7-104 26-131 6-5 17-27 24-47
+                6-20 22-53 36-73 19-28 24-49 24-96 0-85-31-115-174-174
+                -64-27-137-66-176-95-69-51-81-71-95-162l-6-38h596l595 0-4 22
+                c-3 13-8 46-11 73-4 28-11 58-16 68-11 19-165 99-277 142
+                -40 16-88 42-107 59-33 29-35 36-37 96-2 54 2 72 24 110
+                14 25 28 57 32 72 3 15 17 38 31 52 19 19 25 36 25 69
+                0 23-5 48-10 53-8 8-7 20 0 40 7 16 14 67 17 115
+                5 72 3 92-15 132-21 47-69 87-104 87-10 0-18 4-18 9
+                0 5-15 16-34 25-39 19-161 20-216 3z"></path> </g>
+            </svg>
+        </div>
+        <div class="info">
+            Martínez Borat, Amparo
+            <small>La Colla del Beatriu</small>
+             <div class="behaviour">
+                <div>
+                    <img src="https://docent.edu.gva.es/md-front/www/imgs/icones_SVG/comportament_RP.svg">
+                    Entrega un treball que tenía pendent
+                </div>
+                <div>
+                    <img src="https://docent.edu.gva.es/md-front/www/imgs/icones_SVG/comportament_AT.svg">
+                    Abandona la classe sense permís
+                </div>
+            </div>
+        </div>
+
+        <div class="action"><div class="icon menu"></div></div>
+        <div class="action"><div class="icon circle"></div></div>
+        <div class="action"><div class="icon"></div></div>
+        <div class="action"><div class="icon"></div></div>
+    </div>
+    <div class="row">
+        <div class="avatar">
+            <svg viewBox="0 0 131 131">
+                <g fill="" stroke="" transform="translate(0.000000,131.000000) scale(0.100000,-0.100000)">
+                <path d="M530 1227c-48-15-113-83-128-133-15-50-15-162-1-223
+                7-30 7-47-1-55-23-23-7-104 26-131 6-5 17-27 24-47
+                6-20 22-53 36-73 19-28 24-49 24-96 0-85-31-115-174-174
+                -64-27-137-66-176-95-69-51-81-71-95-162l-6-38h596l595 0-4 22
+                c-3 13-8 46-11 73-4 28-11 58-16 68-11 19-165 99-277 142
+                -40 16-88 42-107 59-33 29-35 36-37 96-2 54 2 72 24 110
+                14 25 28 57 32 72 3 15 17 38 31 52 19 19 25 36 25 69
+                0 23-5 48-10 53-8 8-7 20 0 40 7 16 14 67 17 115
+                5 72 3 92-15 132-21 47-69 87-104 87-10 0-18 4-18 9
+                0 5-15 16-34 25-39 19-161 20-216 3z"></path> </g>
+            </svg>
+        </div>
+        <div class="info">
+            Munsuri Domínguez, José
+            <small>La Colla del Beatriu</small>
+             <div class="behaviour">
+                <div>
+                    <img src="https://docent.edu.gva.es/md-front/www/imgs/icones_SVG/comportament_RP.svg">
+                    S'esforça i participa
+                </div>
+            </div>
+        </div>
+
+        <div class="action"><div class="icon menu"></div></div>
+        <div class="action"><div class="icon circle"></div></div>
+        <div class="action"><div class="icon"></div></div>
+        <div class="action"><div class="icon"></div></div>
+    </div>
+    <div class="row">
+        <div class="avatar">
+            <svg viewBox="0 0 131 131">
+                <g fill="" stroke="" transform="translate(0.000000,131.000000) scale(0.100000,-0.100000)">
+                <path d="M530 1227c-48-15-113-83-128-133-15-50-15-162-1-223
+                7-30 7-47-1-55-23-23-7-104 26-131 6-5 17-27 24-47
+                6-20 22-53 36-73 19-28 24-49 24-96 0-85-31-115-174-174
+                -64-27-137-66-176-95-69-51-81-71-95-162l-6-38h596l595 0-4 22
+                c-3 13-8 46-11 73-4 28-11 58-16 68-11 19-165 99-277 142
+                -40 16-88 42-107 59-33 29-35 36-37 96-2 54 2 72 24 110
+                14 25 28 57 32 72 3 15 17 38 31 52 19 19 25 36 25 69
+                0 23-5 48-10 53-8 8-7 20 0 40 7 16 14 67 17 115
+                5 72 3 92-15 132-21 47-69 87-104 87-10 0-18 4-18 9
+                0 5-15 16-34 25-39 19-161 20-216 3z"></path> </g>
+            </svg>
+        </div>
+        <div class="info">
+            Navarrete Santamaría, Aránzazu
+            <small>La Colla del Beatriu</small>
+             <div class="behaviour">
+
+            </div>
+        </div>
+
+        <div class="action"><div class="icon menu"></div></div>
+        <div class="action"><div class="icon circle active"></div></div>
+        <div class="action"><div class="icon"></div></div>
+        <div class="action"><div class="icon active"></div></div>
+    </div>
+    <div class="row">
+        <div class="avatar">
+            <svg viewBox="0 0 131 131">
+                <g fill="" stroke="" transform="translate(0.000000,131.000000) scale(0.100000,-0.100000)">
+                <path d="M530 1227c-48-15-113-83-128-133-15-50-15-162-1-223
+                7-30 7-47-1-55-23-23-7-104 26-131 6-5 17-27 24-47
+                6-20 22-53 36-73 19-28 24-49 24-96 0-85-31-115-174-174
+                -64-27-137-66-176-95-69-51-81-71-95-162l-6-38h596l595 0-4 22
+                c-3 13-8 46-11 73-4 28-11 58-16 68-11 19-165 99-277 142
+                -40 16-88 42-107 59-33 29-35 36-37 96-2 54 2 72 24 110
+                14 25 28 57 32 72 3 15 17 38 31 52 19 19 25 36 25 69
+                0 23-5 48-10 53-8 8-7 20 0 40 7 16 14 67 17 115
+                5 72 3 92-15 132-21 47-69 87-104 87-10 0-18 4-18 9
+                0 5-15 16-34 25-39 19-161 20-216 3z"></path> </g>
+            </svg>
+        </div>
+        <div class="info">
+           Pinazo Hidalgo, Mario
+            <small>La Colla del Beatriu</small>
+             <div class="behaviour">
+                <div>
+                    <img src="https://docent.edu.gva.es/md-front/www/imgs/icones_SVG/comportament_RP.svg">
+                    Ha millorat el seu rendiment
+                </div>
+                <div>
+                    <img src="https://docent.edu.gva.es/md-front/www/imgs/icones_SVG/comportament_AT.svg">
+                    Abandona la classe sense permís
+                </div>
+            </div>
+        </div>
+
+        <div class="action"><div class="icon menu"></div></div>
+        <div class="action"><div class="icon circle"></div></div>
+        <div class="action"><div class="icon"></div></div>
+        <div class="action"><div class="icon"></div></div>
+    </div>
+    <div class="row">
+        <div class="avatar">
+            <svg viewBox="0 0 131 131">
+                <g fill="" stroke="" transform="translate(0.000000,131.000000) scale(0.100000,-0.100000)">
+                <path d="M530 1227c-48-15-113-83-128-133-15-50-15-162-1-223
+                7-30 7-47-1-55-23-23-7-104 26-131 6-5 17-27 24-47
+                6-20 22-53 36-73 19-28 24-49 24-96 0-85-31-115-174-174
+                -64-27-137-66-176-95-69-51-81-71-95-162l-6-38h596l595 0-4 22
+                c-3 13-8 46-11 73-4 28-11 58-16 68-11 19-165 99-277 142
+                -40 16-88 42-107 59-33 29-35 36-37 96-2 54 2 72 24 110
+                14 25 28 57 32 72 3 15 17 38 31 52 19 19 25 36 25 69
+                0 23-5 48-10 53-8 8-7 20 0 40 7 16 14 67 17 115
+                5 72 3 92-15 132-21 47-69 87-104 87-10 0-18 4-18 9
+                0 5-15 16-34 25-39 19-161 20-216 3z"></path> </g>
+            </svg>
+        </div>
+        <div class="info">
+            Simón Sáez, Claudia
+            <small>La Colla del Beatriu</small>
+             <div class="behaviour">
+                <div>
+                    <img src="https://docent.edu.gva.es/md-front/www/imgs/icones_SVG/comportament_RP.svg">
+                    Ha fet els deures
+                </div>
+            </div>
+        </div>
+
+        <div class="action"><div class="icon menu"></div></div>
+        <div class="action"><div class="icon circle"></div></div>
+        <div class="action"><div class="icon"></div></div>
+        <div class="action"><div class="icon"></div></div>
+    </div>
+
+</div>
+
+
+
+</body>
+</html>
+
+
